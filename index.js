@@ -24,7 +24,7 @@ function configure(options) {
     options = {};
   else
     options = lodash.cloneDeep(options);
-  
+
   configureErrors(config, options);
   configureVerbosity(config, options);
   configureGlobals(config, options);
@@ -33,7 +33,7 @@ function configure(options) {
   configureFiles(config, options);
   configureNunjucks(config, options);
   configurePluginOptions(config, options);
-  
+
   return config;
 }
 
@@ -89,22 +89,25 @@ function configureNunjucks(config, options) {
   var g = config.g;
   var filters = g.filters;
   var extensions = g.extensions;
+  var globalData = g.data;
   var name;
-  // At this point, options should only contain fields which are relevant to 
+  // At this point, options should only contain fields which are relevant to
   // the nunjucks.configure api.
-  
-  // Disable watch by default for the gulp system, since gulp will not exit 
+
+  // Disable watch by default for the gulp system, since gulp will not exit
   // while files are being watched.
   if (options.watch === undefined)
     options.watch = false;
-  
+
   config.env = nunjucks.configure(config.src, options);
-  
+
   env = config.env;
   for (name in filters)
     env.addFilter(name, filters[name]);
   for (name in extensions)
     env.addExtension(name, extensions[name]);
+  for (name in globalData)
+    env.addGlobal(name, globalData[name]);
 }
 
 function configureVerbosity(config, options) {
@@ -188,12 +191,12 @@ function assignLocals(context, config, file) {
 
 function plugin(options) {
   var config = configure(options);
-  
+
   function render(file, enc, cb) {
     var context = lodash.cloneDeep(config.context);
     var env = config.env;
     var _this = this;
-    
+
     if (file.isNull()) {
       this.push(file);
       return cb();
@@ -205,7 +208,7 @@ function plugin(options) {
     if (config.locals)
       assignLocals(context, config, file);
     config.vlog('Rendering nunjucks file.path:', file.path);
-    
+
     if (config.renderString) {
       env.renderString(file.contents.toString(), context, function(err, result) {
         if (err)
