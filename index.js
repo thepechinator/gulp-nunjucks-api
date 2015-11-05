@@ -210,7 +210,7 @@ function plugin(options) {
     config.vlog('Rendering nunjucks file.path:', file.path);
 
     if (config.renderString) {
-      env.renderString(file.contents.toString(), context, function(err, result) {
+      env.renderString(file.contents.toString(), context, { path: path.resolve(file.path) }, function(err, result) {
         if (err)
           return handleError(config, _this, err, cb);
         file.contents = new Buffer(result);
