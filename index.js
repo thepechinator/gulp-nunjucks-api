@@ -20,6 +20,9 @@ function configure(options) {
     renderString: false,
     piping: true
   };
+
+  config.env = options.env || null;
+
   if (options === undefined || options === null)
     options = {};
   else
@@ -99,15 +102,17 @@ function configureNunjucks(config, options) {
   if (options.watch === undefined)
     options.watch = false;
 
-  config.env = nunjucks.configure(config.src, options);
+  if (config.env === null) {
+    config.env = nunjucks.configure(config.src, options);
 
-  env = config.env;
-  for (name in filters)
-    env.addFilter(name, filters[name]);
-  for (name in extensions)
-    env.addExtension(name, extensions[name]);
-  for (name in globalData)
-    env.addGlobal(name, globalData[name]);
+    env = config.env;
+    for (name in filters)
+      env.addFilter(name, filters[name]);
+    for (name in extensions)
+      env.addExtension(name, extensions[name]);
+    for (name in globalData)
+      env.addGlobal(name, globalData[name]);
+  }
 }
 
 function configureVerbosity(config, options) {
