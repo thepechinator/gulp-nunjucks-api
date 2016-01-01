@@ -1,6 +1,6 @@
 {
   "name": "gulp-nunjucks-api",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "Render Nunjucks templates with data, custom filters, custom context functions and options for other Nunjucks API features.",
   "license": "MIT",
   "repository": {
@@ -29,9 +29,9 @@
   ],
   "dependencies": {
     "glob": "^5.0.10",
-    "gulp-util": "~2.2.0",
+    "gulp-util": "^3.0.7",
     "lodash": "^3.9.3",
-    "nunjucks": "^2.1.0",
+    "nunjucks": "^2.2.0",
     "require-new": "^1.0.2",
     "through2": "~0.4.0"
   },
